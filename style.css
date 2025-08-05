@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.esquerda p {
+  font-size: 16px;
+  color: #a09e9e;
+  font-weight: bold;
+  padding: 5px;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+.sem-tarefas{
+    text-align: center;
+    margin-top: 40px;
+    color: #7c7c7c;
+}
+
+#pesquisar {
+    padding: 10px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+}
+
+.add-bnt {
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    padding: 12px 20px;
+    transition: background 0.3s;
+}
+
+.add-bnt:hover {
+    background-color: rgba(0, 0, 0, 0.582);
+}
