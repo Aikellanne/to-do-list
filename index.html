@@ -10,16 +10,36 @@
         <header class="topo">
             <div class="esquerda">
                 <h1>Tarefas</h1>
-                <p>Anote e organize suas ideias</p>
+                <p>Anote e organize suas ideias.</p>
             </div>
             <div class="direita">
                 <input type="text" placeholder="Pesquisar..." id="pesquisar">
-                <button class="add-bnt">+ Nova Tarefa</button>
+                <button id="criar-tarefas">+ Nova Tarefa</button>
             </div>     
         </header> 
 
         <main>
-            <p class="sem-tarefas">Nenhuma tarefa ainda. Que tal fazer sua primeira anotação?</p>
+            <p id="sem-tarefas">Nenhuma tarefa ainda. Que tal fazer sua primeira anotação?</p>
+            
+            <div class="colunas-container" id="colunas">
+              <div class="coluna" id="afazer">
+                <h2>A Fazer</h2>
+                <hr>
+                <div class="tarefas"></div>
+              </div>
+
+              <div class="coluna" id="fazendo">
+                <h2>Fazendo</h2>
+                <hr>
+                <div class="tarefas"></div>
+              </div>
+
+              <div class="coluna" id="concluido">
+                <h2>Concluído</h2>
+                <hr>
+                <div class="tarefas"></div>
+              </div>
+            </div> 
         </main>
         
     <script src="script.js"></script>

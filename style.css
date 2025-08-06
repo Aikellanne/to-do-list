@@ -9,6 +9,7 @@ body {
     padding: 30px;
 }
 
+/* TOPO */
 header {
     display: flex;
     justify-content: space-between;
@@ -17,30 +18,12 @@ header {
 
 .esquerda p {
   font-size: 16px;
-  color: #a09e9e;
+  color: #979797;
   font-weight: bold;
   padding: 5px;
 }
 
-main{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 400px;
-}
-.sem-tarefas{
-    text-align: center;
-    margin-top: 40px;
-    color: #7c7c7c;
-}
-
-#pesquisar {
-    padding: 10px;
-    border-radius: 50px;
-    border: 1px solid #ccc;
-}
-
-.add-bnt {
+#criar-tarefas {
     background: black;
     color: white;
     border: none;
@@ -50,6 +33,58 @@ main{
     transition: background 0.3s;
 }
 
-.add-bnt:hover {
+#criar-tarefas:hover {
     background-color: rgba(0, 0, 0, 0.582);
 }
+
+#pesquisar {
+    padding: 10px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+}
+
+/* COLUNAS */
+.colunas-container{
+    display: none;
+    justify-content: space-between;
+    margin-top: 40px;
+    gap: 40px;
+}
+
+.coluna{
+    flex: 1;
+    min-height: 250px;
+    min-width: 250px;
+    padding: 15px;
+}
+
+.coluna h2{
+    font-size: 20px;
+}
+
+hr{
+    margin-top: 25px;
+    border: 1px solid black;
+}
+
+.tarefas{
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.tarefas:hover{
+    background-color: rgb(214, 211, 211, 0.5);
+}
+
+/* MENSAGEM CENTRAL */
+#sem-tarefas{
+    text-align: center;
+    color: #7c7c7c;
+    margin-top: 200px;
+}
+
+
+
+
