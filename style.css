@@ -7,6 +7,7 @@
 body {
     font-family: Arial, sans-serif;
     padding: 30px;
+    background-color: #f4f4f4;
 }
 
 /* TOPO */
@@ -18,7 +19,7 @@ header {
 
 .esquerda p {
   font-size: 16px;
-  color: #979797;
+  color: rgb(243, 69, 0);
   font-weight: bold;
   padding: 5px;
 }
@@ -81,10 +82,70 @@ hr{
 /* MENSAGEM CENTRAL */
 #sem-tarefas{
     text-align: center;
-    color: #7c7c7c;
-    margin-top: 200px;
+    color: #5e5c5c;
+    margin-top: 220px;
 }
 
+/* FORMULÁRIO DE TAREFAS */
+.oculto{
+    display: none;
+}
 
+#form-novatarefa{
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1;
+    border-radius: 10px;
+    position: fixed;
+    top: 25%;
+    left: 23%;
+    height: 350px;
+}
+
+#form-novatarefa input,
+#form-novatarefa textarea{
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+label{
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#descricao{
+    height: 150px;
+    margin-top: 5px;
+}
+
+.botoes {
+    display: flex;
+    justify-content: space-between;
+}
+
+#cancelar{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1 solid #a3a3a3;
+    font-weight: bold;
+    background-color: white;
+}
+
+#salvar{
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    background-color: rgb(243, 69, 0);
+    color: white;
+}
+
+#titulo{
+    font-size: 22px;
+    border: none;
+}
 
 
