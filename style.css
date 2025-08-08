@@ -72,11 +72,7 @@ hr{
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
-    transition: background 0.3s;
-}
-
-.tarefas:hover{
-    background-color: rgb(214, 211, 211, 0.5);
+    background-color: white;
 }
 
 /* MENSAGEM CENTRAL */
