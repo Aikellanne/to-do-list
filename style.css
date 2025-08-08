@@ -91,6 +91,12 @@ hr{
     display: none;
 }
 
+#form-novatarefa .campo{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
 #form-novatarefa{
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -98,17 +104,22 @@ hr{
     z-index: 1;
     border-radius: 10px;
     position: fixed;
-    top: 25%;
-    left: 23%;
-    height: 350px;
+    top: 20%;
+    left: 32%;
+    height: 380px;
+    width: 500px;
 }
 
 #form-novatarefa input,
 #form-novatarefa textarea{
-    width: 100%;
     border-radius: 5px;
     padding: 5px;
     margin-bottom: 10px;
+}
+
+#data{
+    width: 26%;
+    border: 1px solid #ccc;
 }
 
 label{
@@ -119,6 +130,7 @@ label{
 #descricao{
     height: 150px;
     margin-top: 5px;
+    width: 100%;
 }
 
 .botoes {
@@ -127,11 +139,12 @@ label{
 }
 
 #cancelar{
-    padding: 5px;
+    padding: 6px;
     border-radius: 5px;
     border: 1 solid #a3a3a3;
     font-weight: bold;
     background-color: white;
+    border: 1px solid #ccc;
 }
 
 #salvar{
@@ -146,6 +159,7 @@ label{
 #titulo{
     font-size: 22px;
     border: none;
+    width: 100%;
 }
 
 
