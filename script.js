@@ -30,12 +30,17 @@ bntSalvar.addEventListener ("click", function (){
         return;
     }
 
+    // formatar a data para DD/MM/AAAA
+   const dataBruta = calendario.value; // Exemplo: "2025-08-14"
+   const [ano, mes, dia] = dataBruta.split("-"); // Quebra em partes
+   const dataFormatada = `${dia}/${mes}/${ano}`; // Junta no formato desejado  
+
     const card = document.createElement("div");
     card.classList.add("card");
     card.innerHTML = `
         <h3>${titulo}</h3>
         <p>${descricao}</p>
-        <p>${data}</p>
+        <small>${dataFormatada}</small>
     `;
 
     const tarefaAFazer = document.querySelector("#afazer .tarefas");
