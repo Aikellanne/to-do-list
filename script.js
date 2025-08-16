@@ -38,8 +38,19 @@ bntSalvar.addEventListener ("click", function (){
     const card = document.createElement("div");
     card.classList.add("card");
     card.innerHTML = `
-        <h4>${titulo}</h4>
+    <div class="card-header">
+      <div class="menu-info">
+        <h3>${titulo}</h3>
         <p>${descricao}</p>
+      </div>
+      <div class="menu-container">
+        <button class="menu-btn">⋮</button>
+        <div class="menu-opcoes oculto">
+          <button class="editar">Editar</button>
+          <button class="excluir">Excluir</button>
+        </div>
+      </div>
+    </div>
         <small>${dataFormatada}</small>
     `;
 
