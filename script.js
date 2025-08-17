@@ -1,7 +1,7 @@
 const botaoTarefa = document.getElementById("criar-tarefas");
 const semTarefas = document.getElementById("sem-tarefas");
 const colunas = document.getElementById("colunas");
-const colunaAFazer = document.getElementById("afazer");
+const colunaPendente = document.getElementById("pendente");
 
 const formTarefa = document.getElementById("form-novatarefa");
 const bntCancelar = document.getElementById("cancelar");
@@ -72,8 +72,8 @@ bntSalvar.addEventListener ("click", function (){
       formTarefa.classList.remove("oculto");
     })
 
-    const tarefaAFazer = document.querySelector("#afazer .tarefas");
-    tarefaAFazer.appendChild(card);
+    const tarefaPendente = document.querySelector("#pendente .tarefas");
+    tarefaPendente.appendChild(card);
 
     inputTitulo.value = "";
     inputDescricao.value = "";
