@@ -54,6 +54,24 @@ bntSalvar.addEventListener ("click", function (){
         <small>${dataFormatada}</small>
     `;
 
+    const menuBtn = card.querySelector(".menu-btn");
+    const menuOpcoes = card.querySelector(".menu-opcoes");
+    menuBtn.addEventListener ("click", function(){
+      menuOpcoes.classList.toggle("oculto");
+    });
+
+    menuOpcoes.querySelector(".excluir").addEventListener("click", function(){
+      card.remove();
+    });
+    
+    menuOpcoes.querySelector(".editar").addEventListener("click", function(){
+      inputTitulo.value = titulo;
+      inputDescricao.value = descricao;
+      calendario.value = dataBruta;
+      card.remove();
+      formTarefa.classList.remove("oculto");
+    })
+
     const tarefaAFazer = document.querySelector("#afazer .tarefas");
     tarefaAFazer.appendChild(card);
 
