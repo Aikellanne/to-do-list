@@ -72,6 +72,9 @@ bntSalvar.addEventListener ("click", function (){
       formTarefa.classList.remove("oculto");
     })
 
+    card.setAttribute("draggable", "true"); //isso torna o card arrastável
+    
+
     const tarefaPendente = document.querySelector("#pendente .tarefas");
     tarefaPendente.appendChild(card);
 
