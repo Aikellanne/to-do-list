@@ -70,8 +70,10 @@ hr{
 
 .tarefas{
     max-height: 400px;
+    min-height: 100px;
     overflow-y: auto;
     padding-right: 5px; 
+    
 }
 
 /* CARDS */
@@ -80,8 +82,8 @@ hr{
     margin-bottom: 12px;
     border-bottom: 2px solid #e0dcdc;
     font-family: Arial, sans-serif;
-    transition: background 0.3s;
     position: relative;
+    cursor: grab;
 }
 
 .card:active{
