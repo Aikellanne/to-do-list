@@ -10,18 +10,15 @@ const inputTitulo = document.getElementById("titulo");
 const inputDescricao = document.getElementById("descricao");
 const calendario = document.getElementById("data");
 
-// Mostrar formulário
 botaoTarefa.addEventListener("click", function () {
   semTarefas.classList.add("oculto");
   formTarefa.classList.remove("oculto");
 });
 
-// Cancelar criação
 bntCancelar.addEventListener("click", function () {
   formTarefa.classList.add("oculto");
 });
 
-// Salvar nova tarefa
 bntSalvar.addEventListener("click", function () {
   const titulo = inputTitulo.value.trim();
   const descricao = inputDescricao.value.trim();
@@ -32,14 +29,12 @@ bntSalvar.addEventListener("click", function () {
     return;
   }
 
-  // formatar a data para DD/MM/AAAA
   let dataFormatada = "";
   if (dataBruta) {
     const [ano, mes, dia] = dataBruta.split("-");
     dataFormatada = `${dia}/${mes}/${ano}`;
   }
 
-  // criar o card
   const card = document.createElement("div");
   card.classList.add("card");
   card.id = "card-" + Date.now();
@@ -62,7 +57,6 @@ bntSalvar.addEventListener("click", function () {
     <small>${dataFormatada}</small>
   `;
 
-  // Menu excluir/editar
   const menuBtn = card.querySelector(".menu-btn");
   const menuOpcoes = card.querySelector(".menu-opcoes");
 
@@ -72,6 +66,7 @@ bntSalvar.addEventListener("click", function () {
 
   menuOpcoes.querySelector(".excluir").addEventListener("click", function () {
     card.remove();
+    ContarTarefas();
   });
 
   menuOpcoes.querySelector(".editar").addEventListener("click", function () {
@@ -82,7 +77,7 @@ bntSalvar.addEventListener("click", function () {
     formTarefa.classList.remove("oculto");
   });
 
-  // Eventos de arrastar
+  // eventos de arrastar
   card.addEventListener("dragstart", function (e) {
     e.dataTransfer.setData("text/plain", card.id);
     card.classList.add("arrastando");
@@ -92,17 +87,17 @@ bntSalvar.addEventListener("click", function () {
     card.classList.remove("arrastando");
   });
 
-  // adicionar no pendente
   const tarefaPendente = document.querySelector("#pendente .tarefas");
   tarefaPendente.appendChild(card);
 
-  // limpar formulário
   inputTitulo.value = "";
   inputDescricao.value = "";
   calendario.value = "";
 
   formTarefa.classList.add("oculto");
   colunas.style.display = "flex";
+
+  ContarTarefas();
 });
 
 // Permitir drop em todas as colunas
@@ -125,6 +120,15 @@ TodasColunas.forEach((coluna) => {
     const dragging = document.getElementById(cardId);
     if (dragging) {
       coluna.appendChild(dragging);
+      ContarTarefas();
     }
   });
+
+  function ContarTarefas (){
+    document.querySelectorAll(".coluna").forEach(coluna => {
+      const tarefas = coluna.querySelectorAll('.tarefas .card'); 
+      const contador = coluna.querySelector('.contador');
+      contador.textContent = `(${tarefas.length})`;
+    });
+  }
 });
