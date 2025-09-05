@@ -19,6 +19,8 @@ bntCancelar.addEventListener("click", function () {
   formTarefa.classList.add("oculto");
 });
 
+let cardEmEdicao = null; 
+
 bntSalvar.addEventListener("click", function () {
   const titulo = inputTitulo.value.trim();
   const descricao = inputDescricao.value.trim();
@@ -35,6 +37,13 @@ bntSalvar.addEventListener("click", function () {
     dataFormatada = `${dia}/${mes}/${ano}`;
   }
 
+  if (cardEmEdicao) {
+   cardEmEdicao.querySelector("h3").textContent = titulo;
+   cardEmEdicao.querySelector("p").textContent = descricao;
+   cardEmEdicao.querySelector("small").textContent = dataFormatada;
+
+  cardEmEdicao = null; //sai do modo edição
+  }else{
   const card = document.createElement("div");
   card.classList.add("card");
   card.id = "card-" + Date.now();
@@ -60,8 +69,15 @@ bntSalvar.addEventListener("click", function () {
   const menuBtn = card.querySelector(".menu-btn");
   const menuOpcoes = card.querySelector(".menu-opcoes");
 
-  menuBtn.addEventListener("click", function () {
+  menuBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
     menuOpcoes.classList.toggle("oculto");
+  });
+
+  document.addEventListener("click", function(e){
+    if (!menuOpcoes.contains(e.target) && e.target !== menuBtn){
+      menuOpcoes.classList.add("oculto");
+    }
   });
 
   menuOpcoes.querySelector(".excluir").addEventListener("click", function () {
@@ -70,10 +86,16 @@ bntSalvar.addEventListener("click", function () {
   });
 
   menuOpcoes.querySelector(".editar").addEventListener("click", function () {
-    inputTitulo.value = titulo;
-    inputDescricao.value = descricao;
-    calendario.value = dataBruta;
-    card.remove();
+    inputTitulo.value = card.querySelector("h3").textContent;
+    inputDescricao.value = card.querySelector("p").textContent;
+
+    const dataTexto = card.querySelector("small").textContent;
+      if (dataTexto) {
+        const [dia, mes, ano] = dataTexto.split("/");
+        calendario.value = `${ano}-${mes}-${dia}`;
+      }
+
+    cardEmEdicao = card; 
     formTarefa.classList.remove("oculto");
   });
 
@@ -89,6 +111,7 @@ bntSalvar.addEventListener("click", function () {
 
   const tarefaPendente = document.querySelector("#pendente .tarefas");
   tarefaPendente.appendChild(card);
+  }
 
   inputTitulo.value = "";
   inputDescricao.value = "";
@@ -123,12 +146,12 @@ TodasColunas.forEach((coluna) => {
       ContarTarefas();
     }
   });
+});
 
-  function ContarTarefas (){
+function ContarTarefas (){
     document.querySelectorAll(".coluna").forEach(coluna => {
       const tarefas = coluna.querySelectorAll('.tarefas .card'); 
       const contador = coluna.querySelector('.contador');
       contador.textContent = `(${tarefas.length})`;
     });
   }
-});
