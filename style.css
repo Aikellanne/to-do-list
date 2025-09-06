@@ -64,7 +64,7 @@ header {
 }
 
 hr{
-    margin-top: 25px;
+    margin-top: 15px;
     border: 1px solid black;
 }
 
@@ -97,13 +97,13 @@ hr{
 }
 
 .card h3{
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .card p{
     font-size: 15px;
     color: #555;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     margin-top: 5px;
     line-height: 1.4;
 }
@@ -183,9 +183,9 @@ hr{
     border-radius: 10px;
     position: fixed;
     top: 20%;
-    left: 32%;
+    left: 31%;
     height: 380px;
-    width: 500px;
+    width: 520px;
 }
 
 #form-novatarefa input,

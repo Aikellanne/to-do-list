@@ -22,14 +22,17 @@ bntCancelar.addEventListener("click", function () {
 let cardEmEdicao = null; 
 
 bntSalvar.addEventListener("click", function () {
-  const titulo = inputTitulo.value.trim();
-  const descricao = inputDescricao.value.trim();
+  let titulo = inputTitulo.value.trim();
+  let descricao = inputDescricao.value.trim();
   const dataBruta = calendario.value;
 
   if (titulo === "") {
     alert("Por favor, insira um título para a tarefa.");
     return;
   }
+
+  titulo = titulo.length > 20 ? titulo.substring(0, 20) + "..." : titulo;
+  descricao = descricao.length > 30 ? descricao.substring(0, 30) + "..." : descricao;
 
   let dataFormatada = "";
   if (dataBruta) {
