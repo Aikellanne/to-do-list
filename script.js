@@ -10,6 +10,24 @@ const inputTitulo = document.getElementById("titulo");
 const inputDescricao = document.getElementById("descricao");
 const calendario = document.getElementById("data");
 
+const inputPesquisar = document.getElementById("pesquisar");
+
+inputPesquisar.addEventListener("input", function() {
+    const termo = this.value.toLowerCase();
+    const todasTarefas = document.querySelectorAll(".card");
+
+    todasTarefas.forEach(card => {
+        const titulo = card.querySelector("h3").textContent.toLowerCase();
+        const descricao = card.querySelector("p").textContent.toLowerCase();
+
+        if (titulo.includes(termo) || descricao.includes(termo)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
+
 botaoTarefa.addEventListener("click", function () {
   semTarefas.classList.add("oculto");
   formTarefa.classList.remove("oculto");

@@ -38,10 +38,17 @@ header {
     background-color: rgba(0, 0, 0, 0.582);
 }
 
+.direita {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 #pesquisar {
     padding: 10px;
     border-radius: 50px;
     border: 1px solid #ccc;
+    width: 200px;
 }
 
 /* COLUNAS */
@@ -69,11 +76,11 @@ hr{
 }
 
 .tarefas{
-    max-height: 400px;
+    max-height: 600px;
     min-height: 100px;
-    overflow-y: auto;
+    overflow-y: overlay;
+    overflow-x: hidden;
     padding-right: 5px; 
-    
 }
 
 /* CARDS */
