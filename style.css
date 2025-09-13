@@ -76,11 +76,19 @@ hr{
 }
 
 .tarefas{
-    max-height: 600px;
-    min-height: 100px;
-    overflow-y: overlay;
+    max-height: 500px;
+    overflow-y: auto;
     overflow-x: hidden;
     padding-right: 5px; 
+}
+
+.tarefas::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tarefas::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 3px;
 }
 
 /* CARDS */

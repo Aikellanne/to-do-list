@@ -1,4 +1,3 @@
-//elementos
 const botaoTarefa = document.getElementById("criar-tarefas");
 const semTarefas = document.getElementById("sem-tarefas");
 const colunas = document.getElementById("colunas");
@@ -14,14 +13,12 @@ const inputPesquisar = document.getElementById("pesquisar");
 
 let cardEmEdicao = null;
 
-//funçao p/ fechar todos os menus
 function fecharTodosMenus (){
     document.querySelectorAll(".menu-opcoes").forEach(menu => {
       menu.classList.add("oculto");
     });
   }
 
-//pesquisa
 inputPesquisar.addEventListener("input", function() {
     const termo = this.value.toLowerCase();
     const todasTarefas = document.querySelectorAll(".card");
@@ -38,13 +35,11 @@ inputPesquisar.addEventListener("input", function() {
     });
 });
 
-//abrir formulario
 botaoTarefa.addEventListener("click", function () {
   semTarefas.classList.add("oculto");
   formTarefa.classList.remove("oculto");
 });
 
-//cancelar
 bntCancelar.addEventListener("click", function () {
   formTarefa.classList.add("oculto");
   inputTitulo.value = "";
@@ -53,7 +48,6 @@ bntCancelar.addEventListener("click", function () {
   cardEmEdicao = null;
 });
 
-//salvar
 bntSalvar.addEventListener("click", function () {
   let titulo = inputTitulo.value.trim();
   let descricao = inputDescricao.value.trim();
@@ -105,20 +99,17 @@ bntSalvar.addEventListener("click", function () {
   const menuBtn = card.querySelector(".menu-btn");
   const menuOpcoes = card.querySelector(".menu-opcoes");
 
-  //botao
   menuBtn.addEventListener("click", function (e) {
     e.stopPropagation();
     fecharTodosMenus();
     menuOpcoes.classList.toggle("oculto");
   });
 
-  //excluir
   menuOpcoes.querySelector(".excluir").addEventListener("click", function () {
     card.remove();
     ContarTarefas();
   });
 
-  //editar
   menuOpcoes.querySelector(".editar").addEventListener("click", function () {
     inputTitulo.value = card.querySelector("h3").textContent;
     inputDescricao.value = card.querySelector("p").textContent;
@@ -133,7 +124,6 @@ bntSalvar.addEventListener("click", function () {
     formTarefa.classList.remove("oculto");
   });
 
-  // eventos de arrastar
   card.addEventListener("dragstart", function (e) {
     e.dataTransfer.setData("text/plain", card.id);
     card.classList.add("arrastando");
@@ -143,12 +133,10 @@ bntSalvar.addEventListener("click", function () {
     card.classList.remove("arrastando");
   });
 
-  //adiciona na coluna pendente
   const tarefaPendente = document.querySelector("#pendente .tarefas");
   tarefaPendente.appendChild(card);
   }
 
-  //limpa formulario
   inputTitulo.value = "";
   inputDescricao.value = "";
   calendario.value = "";
@@ -159,12 +147,10 @@ bntSalvar.addEventListener("click", function () {
   ContarTarefas();
 });
 
-// Fecha menus ao clicar fora
 document.addEventListener("click", () => {
   fecharTodosMenus();
 });
 
-//permiti drop em todas as colunas
 const TodasColunas = document.querySelectorAll(".coluna .tarefas");
 
 TodasColunas.forEach((coluna) => {
