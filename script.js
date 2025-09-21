@@ -1,10 +1,11 @@
+// ELEMENTOS
 const botaoTarefa = document.getElementById("criar-tarefas");
-const semTarefas = document.getElementById("sem-tarefas");
-const colunas = document.getElementById("colunas");
-
-const formTarefa = document.getElementById("form-novatarefa");
 const bntCancelar = document.getElementById("cancelar");
 const bntSalvar = document.getElementById("salvar");
+const colunasContainer = document.getElementById("colunas");
+
+const formTarefa = document.getElementById("form-novatarefa");
+const semTarefas = document.getElementById("sem-tarefas");
 
 const inputTitulo = document.getElementById("titulo");
 const inputDescricao = document.getElementById("descricao");
@@ -13,172 +14,223 @@ const inputPesquisar = document.getElementById("pesquisar");
 
 let cardEmEdicao = null;
 
-function fecharTodosMenus (){
-    document.querySelectorAll(".menu-opcoes").forEach(menu => {
-      menu.classList.add("oculto");
-    });
-  }
+// CRIAR MENSAGENS DE ERRO
+let erroTitulo = document.createElement("div");
+erroTitulo.style.color = "red";
+erroTitulo.style.fontSize = "12px";
+erroTitulo.style.marginTop = "2px";
+inputTitulo.parentNode.appendChild(erroTitulo);
 
-inputPesquisar.addEventListener("input", function() {
-    const termo = this.value.toLowerCase();
-    const todasTarefas = document.querySelectorAll(".card");
+let erroDescricao = document.createElement("div");
+erroDescricao.style.color = "red";
+erroDescricao.style.fontSize = "12px";
+erroDescricao.style.marginTop = "2px";
+inputDescricao.parentNode.appendChild(erroDescricao);
 
-    todasTarefas.forEach(card => {
-        const titulo = card.querySelector("h3").textContent.toLowerCase();
-        const descricao = card.querySelector("p").textContent.toLowerCase();
-
-        if (titulo.includes(termo) || descricao.includes(termo)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
-});
-
-botaoTarefa.addEventListener("click", function () {
-  semTarefas.classList.add("oculto");
-  formTarefa.classList.remove("oculto");
-});
-
-bntCancelar.addEventListener("click", function () {
-  formTarefa.classList.add("oculto");
-  inputTitulo.value = "";
-  inputDescricao.value = "";
-  calendario.value = "";
-  cardEmEdicao = null;
-});
-
-bntSalvar.addEventListener("click", function () {
-  let titulo = inputTitulo.value.trim();
-  let descricao = inputDescricao.value.trim();
-  const dataBruta = calendario.value;
-
-  if (titulo === "") {
-    alert("Por favor, insira um título para a tarefa.");
-    return;
-  }
-
-  titulo = titulo.length > 20 ? titulo.substring(0, 20) + "..." : titulo;
-  descricao = descricao.length > 30 ? descricao.substring(0, 30) + "..." : descricao;
-
-  let dataFormatada = "";
-  if (dataBruta) {
-    const [ano, mes, dia] = dataBruta.split("-");
-    dataFormatada = `${dia}/${mes}/${ano}`;
-  }
-
-  if (cardEmEdicao) {
-   cardEmEdicao.querySelector("h3").textContent = titulo;
-   cardEmEdicao.querySelector("p").textContent = descricao;
-   cardEmEdicao.querySelector("small").textContent = dataFormatada;
-   cardEmEdicao = null;
-  }else{
-
-  const card = document.createElement("div");
-  card.classList.add("card");
-  card.id = "card-" + Date.now();
-  card.setAttribute("draggable", "true");
-
-  card.innerHTML = `
-    <div class="card-header">
-      <div class="menu-info">
-        <h3>${titulo}</h3>
-        <p>${descricao}</p>
-      </div>
-      <div class="menu-container">
-        <button class="menu-btn">⋮</button>
-        <div class="menu-opcoes oculto">
-          <button class="editar">Editar</button>
-          <button class="excluir">Excluir</button>
-        </div>
-      </div>
-    </div>
-    <small>${dataFormatada}</small>
-  `;
-
-  const menuBtn = card.querySelector(".menu-btn");
-  const menuOpcoes = card.querySelector(".menu-opcoes");
-
-  menuBtn.addEventListener("click", function (e) {
-    e.stopPropagation();
-    fecharTodosMenus();
-    menuOpcoes.classList.toggle("oculto");
-  });
-
-  menuOpcoes.querySelector(".excluir").addEventListener("click", function () {
-    card.remove();
-    ContarTarefas();
-  });
-
-  menuOpcoes.querySelector(".editar").addEventListener("click", function () {
-    inputTitulo.value = card.querySelector("h3").textContent;
-    inputDescricao.value = card.querySelector("p").textContent;
-
-    const dataTexto = card.querySelector("small").textContent;
-      if (dataTexto) {
-        const [dia, mes, ano] = dataTexto.split("/");
-        calendario.value = `${ano}-${mes}-${dia}`;
-      }
-
-    cardEmEdicao = card; 
+// ABRIR FORM
+botaoTarefa.addEventListener("click", () => {
     formTarefa.classList.remove("oculto");
-  });
-
-  card.addEventListener("dragstart", function (e) {
-    e.dataTransfer.setData("text/plain", card.id);
-    card.classList.add("arrastando");
-  });
-
-  card.addEventListener("dragend", function () {
-    card.classList.remove("arrastando");
-  });
-
-  const tarefaPendente = document.querySelector("#pendente .tarefas");
-  tarefaPendente.appendChild(card);
-  }
-
-  inputTitulo.value = "";
-  inputDescricao.value = "";
-  calendario.value = "";
-
-  formTarefa.classList.add("oculto");
-  colunas.style.display = "flex";
-
-  ContarTarefas();
+    semTarefas.style.display = "none";
+    colunasContainer.style.display = "none";
 });
 
-document.addEventListener("click", () => {
-  fecharTodosMenus();
+// CANCELAR FORM
+bntCancelar.addEventListener("click", () => {
+    formTarefa.classList.add("oculto");
+    limparCampos();
+    cardEmEdicao = null;
+    checarSemTarefas();
 });
 
-const TodasColunas = document.querySelectorAll(".coluna .tarefas");
+// SALVAR TAREFA
+bntSalvar.addEventListener("click", () => {
+    let valido = true;
+    erroTitulo.textContent = "";
+    erroDescricao.textContent = "";
+    inputTitulo.style.border = "1px solid #ccc";
+    inputDescricao.style.border = "1px solid #ccc";
+    formTarefa.classList.remove("erro");
 
-TodasColunas.forEach((coluna) => {
-  coluna.addEventListener("dragover", function (e) {
-    e.preventDefault();
-    coluna.classList.add("coluna-destino");
-  });
+    let titulo = inputTitulo.value.trim();
+    let descricao = inputDescricao.value.trim();
+    const dataBruta = calendario.value;
 
-  coluna.addEventListener("dragleave", function () {
-    coluna.classList.remove("coluna-destino");
-  });
-
-  coluna.addEventListener("drop", function (e) {
-    e.preventDefault();
-    coluna.classList.remove("coluna-destino");
-    const cardId = e.dataTransfer.getData("text/plain");
-    const dragging = document.getElementById(cardId);
-    if (dragging) {
-      coluna.appendChild(dragging);
-      ContarTarefas();
+    if (!titulo) {
+        valido = false;
+        erroTitulo.textContent = "* Título obrigatório";
+        inputTitulo.style.border = "1px solid red";
     }
-  });
+    if (!descricao) {
+        valido = false;
+        erroDescricao.textContent = "* Descrição obrigatória";
+        inputDescricao.style.border = "1px solid red";
+    }
+    if (!valido) {
+        formTarefa.classList.add("erro"); 
+        return;
+    }
+
+    // Resumir para o card
+    const tituloCard = titulo.length > 20 ? titulo.substring(0,20) + "..." : titulo;
+    const descricaoCard = descricao.length > 30 ? descricao.substring(0,30) + "..." : descricao;
+
+    let dataFormatada = "";
+    if (dataBruta) {
+        const [ano, mes, dia] = dataBruta.split("-");
+        dataFormatada = `${dia}/${mes}/${ano}`;
+    }
+
+    if (cardEmEdicao) {
+        cardEmEdicao.querySelector("h3").textContent = tituloCard;
+        cardEmEdicao.querySelector("p").textContent = descricaoCard;
+        cardEmEdicao.dataset.tituloCompleto = titulo;
+        cardEmEdicao.dataset.descricaoCompleta = descricao;
+        cardEmEdicao.querySelector("small").textContent = dataFormatada;
+        cardEmEdicao = null;
+    } else {
+        criarCard(titulo, descricao, tituloCard, descricaoCard, dataFormatada);
+    }
+
+    formTarefa.classList.add("oculto");
+    limparCampos();
+    colunasContainer.style.display = "flex";
 });
 
-function ContarTarefas (){
-    document.querySelectorAll(".coluna").forEach(coluna => {
-      const tarefas = coluna.querySelectorAll('.tarefas .card'); 
-      const contador = coluna.querySelector('.contador');
-      contador.textContent = `(${tarefas.length})`;
+// FUNÇÃO CRIAR CARD
+function criarCard(tituloCompleto, descricaoCompleta, tituloCard, descricaoCard, data) {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.setAttribute("draggable", "true");
+    card.dataset.tituloCompleto = tituloCompleto;
+    card.dataset.descricaoCompleta = descricaoCompleta;
+
+    card.innerHTML = `
+        <div class="menu-info">
+            <h3>${tituloCard}</h3>
+            <p>${descricaoCard}</p>
+            <small>${data}</small>
+        </div>
+        <div class="menu-container">
+            <button class="menu-btn">⋮</button>
+            <div class="menu-opcoes oculto">
+                <button class="visualizar">Visualizar</button>
+                <button class="editar">Editar</button>
+                <button class="excluir">Excluir</button>
+            </div>
+        </div>
+    `;
+
+    const menuBtn = card.querySelector(".menu-btn");
+    const menuOpcoes = card.querySelector(".menu-opcoes");
+
+    // Abrir menu
+    menuBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        document.querySelectorAll(".menu-opcoes").forEach(m => m.classList.add("oculto"));
+        menuOpcoes.classList.toggle("oculto");
     });
-  }
+
+    // Visualizar
+    menuOpcoes.querySelector(".visualizar").addEventListener("click", () => {
+        document.getElementById("viewTitulo").textContent = card.dataset.tituloCompleto;
+        document.getElementById("viewDescricao").textContent = card.dataset.descricaoCompleta;
+        document.getElementById("viewData").textContent = data || "";
+        document.getElementById("modalVisualizar").classList.remove("oculto");
+        menuOpcoes.classList.add("oculto");
+    });
+
+    // Editar
+    menuOpcoes.querySelector(".editar").addEventListener("click", () => {
+        inputTitulo.value = card.dataset.tituloCompleto;
+        inputDescricao.value = card.dataset.descricaoCompleta;
+        cardEmEdicao = card;
+        formTarefa.classList.remove("oculto");
+        menuOpcoes.classList.add("oculto");
+    });
+
+    // Excluir
+    menuOpcoes.querySelector(".excluir").addEventListener("click", () => {
+        card.remove();
+        atualizarContadores();
+        checarSemTarefas();
+    });
+
+    // Drag & Drop
+    card.addEventListener("dragstart", () => card.classList.add("arrastando"));
+    card.addEventListener("dragend", () => card.classList.remove("arrastando"));
+
+    // Adicionar à primeira coluna
+    const primeiraColuna = document.querySelector("#pendente");
+    primeiraColuna.appendChild(card);
+
+    atualizarContadores();
+}
+
+// LIMPAR CAMPOS
+function limparCampos() {
+    inputTitulo.value = "";
+    inputDescricao.value = "";
+    calendario.value = "";
+    inputTitulo.style.border = "none";
+    inputDescricao.style.border = "";
+    erroTitulo.textContent = "";
+    erroDescricao.textContent = "";
+}
+
+// Drag & drop para colunas
+document.querySelectorAll(".coluna").forEach(coluna => {
+    coluna.addEventListener("dragover", e => e.preventDefault());
+    coluna.addEventListener("drop", e => {
+        e.preventDefault();
+        const dragging = document.querySelector(".arrastando");
+        if (dragging) coluna.appendChild(dragging);
+        atualizarContadores();
+    });
+});
+
+// Atualizar contadores
+function atualizarContadores() {
+    document.querySelectorAll(".coluna").forEach(coluna => {
+        const contador = coluna.querySelector(".contador");
+        const qtd = coluna.querySelectorAll(".card").length;
+        contador.textContent = `(${qtd})`;
+    });
+}
+
+// Checar se não há tarefas
+function checarSemTarefas() {
+    const total = document.querySelectorAll(".card").length;
+    if (total === 0) {
+        colunasContainer.style.display = "none";
+        semTarefas.style.display = "block";
+    }
+}
+
+// PESQUISAR
+inputPesquisar.addEventListener("input", function () {
+    const termo = this.value.toLowerCase();
+    document.querySelectorAll(".card").forEach(card => {
+        const titulo = card.dataset.tituloCompleto.toLowerCase();
+        const descricao = card.dataset.descricaoCompleta.toLowerCase();
+        card.style.display = titulo.includes(termo) || descricao.includes(termo) ? "flex" : "none";
+    });
+});
+
+// FECHAR MODAL
+document.getElementById("fecharVisualizar").addEventListener("click", () => {
+    document.getElementById("modalVisualizar").classList.add("oculto");
+});
+
+// Fechar modal clicando fora do conteúdo
+const modalVisualizar = document.getElementById("modalVisualizar");
+modalVisualizar.addEventListener("click", (e) => {
+    if (e.target === modalVisualizar) {
+        modalVisualizar.classList.add("oculto");
+    }
+});
+
+
+// FECHAR MENUS AO CLICAR FORA
+document.addEventListener("click", () => {
+    document.querySelectorAll(".menu-opcoes").forEach(menu => menu.classList.add("oculto"));
+});

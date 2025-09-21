@@ -7,61 +7,65 @@
     <title>To-Do List</title>
 </head>
 <body>
-        <header class="topo">
-            <div class="esquerda">
-                <h1>Tarefas</h1>
-                <p>Anote e organize suas ideias.</p>
-            </div>
-            <div class="direita">
-                <input type="text" placeholder="Pesquisar..." id="pesquisar">
-                <button id="criar-tarefas">+ Nova Tarefa</button>
-            </div>     
-        </header> 
+  <header class="topo">
+  <div class="esquerda">
+    <h1>Tarefas</h1>
+    <p>Anote e organize suas ideias.</p>
+  </div>
 
-        <section id="form-novatarefa" class="oculto">
-          <div class="campo">
-          <input type="text" placeholder="Título da tarefa..." id="titulo">
-          </div>
+  <div class="direita">
+    <input type="text" placeholder="Pesquisar..." id="pesquisar">
+    <button id="criar-tarefas">Nova Tarefa</button>
+  </div>     
+  </header> 
 
-          <div class="campo">
-          <input type="date" id="data">
-          </div>
-
-          <div class="campo">
-          <label>Descrição</label>
-          <textarea id="descricao" placeholder="Descreva a tarefa..."></textarea>
-          </div>
-
-          <div class="botoes">
-            <button id="cancelar">Cancelar</button>
-            <button id="salvar">Salvar</button>
-          </div>
-        </section>
-
-        <main>
-            <p id="sem-tarefas">Nenhuma tarefa ainda. Que tal fazer sua primeira anotação?</p>
+  <main>
+    <p id="sem-tarefas">Nenhuma tarefa ainda. Que tal fazer sua primeira anotação?</p>
             
-            <div class="colunas-container" id="colunas">
-              <div class="coluna" id="pendente">
-                <h2>Pendente <span class="contador">(0)</span></h2>
-                <hr>
-                <div class="tarefas"></div>
-              </div>
+    <div class="colunas-container" id="colunas">
+      <div class="coluna" id="pendente">
+        <h2>Pendente <span class="contador">(0)</span></h2>
+        <hr>
+      </div>
+      <div class="coluna" id="fazendo">
+        <h2>Em progresso <span class="contador">(0)</span></h2>
+        <hr>
+      </div>
+      <div class="coluna" id="concluido">
+        <h2>Concluído <span class="contador">(0)</span></h2>
+        <hr>
+      </div>
+    </div> 
+  </main>
 
-              <div class="coluna" id="fazendo">
-                <h2>Em progresso <span class="contador">(0)</span></h2>
-                <hr>
-                <div class="tarefas"></div>
-              </div>
+  <section id="form-novatarefa" class="oculto">
+    <div class="campo">
+      <input type="text" placeholder="Título da tarefa..." id="titulo">
+    </div>
 
-              <div class="coluna" id="concluido">
-                <h2>Concluído <span class="contador">(0)</span></h2>
-                <hr>
-                <div class="tarefas"></div>
-              </div>
-            </div> 
-        </main>
-        
-    <script src="script.js"></script>
+    <div class="campo">
+      <input type="date" id="data">
+    </div>
+    <div class="campo">
+      <label>Descrição</label>
+      <textarea id="descricao" placeholder="Descreva a tarefa..."></textarea>
+    </div>
+
+    <div class="botoes">
+      <button id="cancelar">Cancelar</button>
+      <button id="salvar">Salvar</button>
+    </div>
+  </section>
+  
+  <section id="modalVisualizar" class="modal oculto">
+  <div class="modal-conteudo">
+    <button id="fecharVisualizar" class="fechar">✖</button>
+    <h3 id="viewTitulo"></h3>
+    <p id="viewDescricao"></p>
+    <small id="viewData"></small>
+  </div>
+  </section>
+      
+  <script src="script.js"></script>
 </body>
 </html>
