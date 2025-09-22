@@ -123,12 +123,23 @@ function criarCard(tituloCompleto, descricaoCompleta, tituloCard, descricaoCard,
     const menuBtn = card.querySelector(".menu-btn");
     const menuOpcoes = card.querySelector(".menu-opcoes");
 
-    // Abrir menu
-    menuBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        document.querySelectorAll(".menu-opcoes").forEach(m => m.classList.add("oculto"));
-        menuOpcoes.classList.toggle("oculto");
+    // Abrir/fechar menu
+menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    // Fecha todos os outros menus
+    document.querySelectorAll(".menu-opcoes").forEach(m => {
+        if (m !== menuOpcoes) m.classList.add("oculto");
     });
+    // Toggle no atual (abre/fecha)
+    menuOpcoes.classList.toggle("oculto");
+});
+
+// Fechar ao clicar em uma opção
+menuOpcoes.querySelectorAll("button").forEach(opcao => {
+    opcao.addEventListener("click", () => {
+        menuOpcoes.classList.add("oculto");
+    });
+});
 
     // Visualizar
     menuOpcoes.querySelector(".visualizar").addEventListener("click", () => {
@@ -175,6 +186,7 @@ function limparCampos() {
     inputDescricao.style.border = "";
     erroTitulo.textContent = "";
     erroDescricao.textContent = "";
+    formTarefa.classList.remove("erro");
 }
 
 // Drag & drop para colunas
