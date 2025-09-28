@@ -23,19 +23,30 @@
     <p id="sem-tarefas">Nenhuma tarefa ainda. Que tal fazer sua primeira anotação?</p>
             
     <div class="colunas-container" id="colunas">
-      <div class="coluna" id="pendente">
-        <h2>Pendente <span class="contador">(0)</span></h2>
-        <hr>
+     <div class="coluna" id="pendente">
+      <div class="coluna-header">
+       <h2>Pendente <span class="contador">(0)</span></h2>
+       <hr>
       </div>
-      <div class="coluna" id="fazendo">
-        <h2>Em progresso <span class="contador">(0)</span></h2>
-        <hr>
-      </div>
-      <div class="coluna" id="concluido">
-        <h2>Concluído <span class="contador">(0)</span></h2>
-        <hr>
-      </div>
-    </div> 
+      <div class="coluna-conteudo"></div>
+     </div>
+
+    <div class="coluna" id="fazendo">
+     <div class="coluna-header">
+      <h2>Em progresso <span class="contador">(0)</span></h2>
+      <hr>
+     </div>
+     <div class="coluna-conteudo"></div>
+    </div>
+
+    <div class="coluna" id="concluido">
+     <div class="coluna-header">
+      <h2>Concluído <span class="contador">(0)</span></h2>
+      <hr>
+     </div>
+     <div class="coluna-conteudo"></div>
+    </div>
+  </div>
   </main>
 
   <section id="form-novatarefa" class="oculto">

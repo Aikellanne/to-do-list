@@ -71,26 +71,35 @@ main{
   gap: 30px;
 }
 
+.coluna-header {
+  flex-shrink: 0;
+}
+
 .coluna{
   padding: 10px;
   width: 350px;
-  min-height: 450px;
+  height: 450px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.coluna-conteudo {
+  flex: 1;
   overflow-y: auto;
-  max-height: 400px;
+  padding-right: 5px;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
 }
 
-.coluna::-webkit-scrollbar {
-  width: 5px;
+/* Barra de rolagem delicada */
+.coluna-conteudo::-webkit-scrollbar {
+  width: 4px;
 }
 
-.coluna::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
-  border-radius: 4px; 
+.coluna-conteudo::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
 }
 
 .coluna h2{
@@ -100,7 +109,7 @@ main{
 }
 
 hr{
-  margin-top: 10px;
+  margin: 8px 0 12px 0;
   border: 1px solid black;
 }
 
@@ -156,7 +165,7 @@ hr{
 
 .menu-opcoes button{
   display: block;
-  padding: 6px 12px;
+  padding: 4px 10px;
   width: 100%;
   border: none;
   background: none;
@@ -189,7 +198,7 @@ hr{
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
-  z-index: 1;
+  z-index: 2;
   border-radius: 10px;
   position: fixed;
   top: 20%;

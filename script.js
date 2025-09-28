@@ -32,6 +32,10 @@ botaoTarefa.addEventListener("click", () => {
     formTarefa.classList.remove("oculto");
     semTarefas.style.display = "none";
     colunasContainer.style.display = "none";
+
+    if (document.querySelectorAll(".card").length > 0) {
+        colunasContainer.style.display = "flex";
+    }
 });
 
 // CANCELAR FORM
@@ -70,7 +74,6 @@ bntSalvar.addEventListener("click", () => {
         return;
     }
 
-    // Resumir para o card
     const tituloCard = titulo.length > 20 ? titulo.substring(0,20) + "..." : titulo;
     const descricaoCard = descricao.length > 30 ? descricao.substring(0,30) + "..." : descricao;
 
@@ -78,6 +81,8 @@ bntSalvar.addEventListener("click", () => {
     if (dataBruta) {
         const [ano, mes, dia] = dataBruta.split("-");
         dataFormatada = `${dia}/${mes}/${ano}`;
+    } else if (cardEmEdicao && cardEmEdicao.dataset.dataCompleta) {
+        dataFormatada = cardEmEdicao.dataset.dataCompleta;
     }
 
     if (cardEmEdicao) {
@@ -85,6 +90,7 @@ bntSalvar.addEventListener("click", () => {
         cardEmEdicao.querySelector("p").textContent = descricaoCard;
         cardEmEdicao.dataset.tituloCompleto = titulo;
         cardEmEdicao.dataset.descricaoCompleta = descricao;
+        cardEmEdicao.dataset.dataCompleta = dataFormatada;
         cardEmEdicao.querySelector("small").textContent = dataFormatada;
         cardEmEdicao = null;
     } else {
@@ -103,6 +109,7 @@ function criarCard(tituloCompleto, descricaoCompleta, tituloCard, descricaoCard,
     card.setAttribute("draggable", "true");
     card.dataset.tituloCompleto = tituloCompleto;
     card.dataset.descricaoCompleta = descricaoCompleta;
+    card.dataset.dataCompleta = data;
 
     card.innerHTML = `
         <div class="menu-info">
@@ -124,22 +131,19 @@ function criarCard(tituloCompleto, descricaoCompleta, tituloCard, descricaoCard,
     const menuOpcoes = card.querySelector(".menu-opcoes");
 
     // Abrir/fechar menu
-menuBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    // Fecha todos os outros menus
-    document.querySelectorAll(".menu-opcoes").forEach(m => {
-        if (m !== menuOpcoes) m.classList.add("oculto");
+    menuBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        document.querySelectorAll(".menu-opcoes").forEach(m => {
+            if (m !== menuOpcoes) m.classList.add("oculto");
+        });
+        menuOpcoes.classList.toggle("oculto");
     });
-    // Toggle no atual (abre/fecha)
-    menuOpcoes.classList.toggle("oculto");
-});
 
-// Fechar ao clicar em uma opção
-menuOpcoes.querySelectorAll("button").forEach(opcao => {
-    opcao.addEventListener("click", () => {
-        menuOpcoes.classList.add("oculto");
+    menuOpcoes.querySelectorAll("button").forEach(opcao => {
+        opcao.addEventListener("click", () => {
+            menuOpcoes.classList.add("oculto");
+        });
     });
-});
 
     // Visualizar
     menuOpcoes.querySelector(".visualizar").addEventListener("click", () => {
@@ -154,6 +158,16 @@ menuOpcoes.querySelectorAll("button").forEach(opcao => {
     menuOpcoes.querySelector(".editar").addEventListener("click", () => {
         inputTitulo.value = card.dataset.tituloCompleto;
         inputDescricao.value = card.dataset.descricaoCompleta;
+
+        if (card.dataset.dataCompleta) {
+            const partes = card.dataset.dataCompleta.split("/");
+            if (partes.length === 3) {
+                calendario.value = `${partes[2]}-${partes[1]}-${partes[0]}`;
+            }
+        } else {
+            calendario.value = "";
+        }
+
         cardEmEdicao = card;
         formTarefa.classList.remove("oculto");
         menuOpcoes.classList.add("oculto");
@@ -166,12 +180,8 @@ menuOpcoes.querySelectorAll("button").forEach(opcao => {
         checarSemTarefas();
     });
 
-    // Drag & Drop
-    card.addEventListener("dragstart", () => card.classList.add("arrastando"));
-    card.addEventListener("dragend", () => card.classList.remove("arrastando"));
-
     // Adicionar à primeira coluna
-    const primeiraColuna = document.querySelector("#pendente");
+    const primeiraColuna = document.querySelector("#pendente .coluna-conteudo");
     primeiraColuna.appendChild(card);
 
     atualizarContadores();
@@ -189,22 +199,55 @@ function limparCampos() {
     formTarefa.classList.remove("erro");
 }
 
-// Drag & drop para colunas
-document.querySelectorAll(".coluna").forEach(coluna => {
-    coluna.addEventListener("dragover", e => e.preventDefault());
-    coluna.addEventListener("drop", e => {
+// Drag & Drop
+document.querySelectorAll(".coluna-conteudo").forEach(conteudo => {
+    conteudo.addEventListener("dragover", e => {
         e.preventDefault();
         const dragging = document.querySelector(".arrastando");
-        if (dragging) coluna.appendChild(dragging);
+        const afterElement = getDragAfterElement(conteudo, e.clientY);
+
+        if (afterElement == null) {
+            conteudo.appendChild(dragging);
+        } else {
+            conteudo.insertBefore(dragging, afterElement);
+        }
+    });
+
+    conteudo.addEventListener("drop", () => {
         atualizarContadores();
+        checarSemTarefas();
     });
 });
+
+// Drag start/end global
+document.addEventListener("dragstart", e => {
+    if (e.target.classList.contains("card")) e.target.classList.add("arrastando");
+});
+
+document.addEventListener("dragend", e => {
+    if (e.target.classList.contains("card")) e.target.classList.remove("arrastando");
+});
+
+// Função para achar o card abaixo do cursor
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll(".card:not(.arrastando)")];
+
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
 
 // Atualizar contadores
 function atualizarContadores() {
     document.querySelectorAll(".coluna").forEach(coluna => {
         const contador = coluna.querySelector(".contador");
-        const qtd = coluna.querySelectorAll(".card").length;
+        const qtd = coluna.querySelectorAll(".coluna-conteudo .card").length;
         contador.textContent = `(${qtd})`;
     });
 }
@@ -235,12 +278,9 @@ document.getElementById("fecharVisualizar").addEventListener("click", () => {
 
 // Fechar modal clicando fora do conteúdo
 const modalVisualizar = document.getElementById("modalVisualizar");
-modalVisualizar.addEventListener("click", (e) => {
-    if (e.target === modalVisualizar) {
-        modalVisualizar.classList.add("oculto");
-    }
+modalVisualizar.addEventListener("click", e => {
+    if (e.target === modalVisualizar) modalVisualizar.classList.add("oculto");
 });
-
 
 // FECHAR MENUS AO CLICAR FORA
 document.addEventListener("click", () => {
